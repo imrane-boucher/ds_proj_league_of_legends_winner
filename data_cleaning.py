@@ -15,12 +15,23 @@ import pandas as pd
 
 # import the data
 
-# the data is a ready to use dataset available on kaggle :
+# the base data is a ready to use dataset available on kaggle :
 # https://www.kaggle.com/bobbyscience/league-of-legends-diamond-ranked-games-10-min
 
-df = pd.read_csv('data/high_diamond_ranked_10min.csv')
+# import extended data w/ game duration
+df = pd.read_csv('data/league_data_duration.csv')
 
-df.info()
+
+# over 7300 missing game durations 
+# clean the data by removing the games (rows) where the game duration is missing
+df = df[df['GameDuration'] != 0]
+
+# Turn Game Duration from seconds into minutes
+df['GameDuration'] = round(df['GameDuration'] / 60,0)
+print(df.head())
+# save the new data set with 2500 rows
+df.to_csv('./data/league_data_cleaned_10min.csv', encoding='utf-8', index=False)
+
 # there's no null values and only numerical data, the dataset seems already ready
 # for modelling 
 
